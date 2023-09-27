@@ -11,10 +11,10 @@ import (
 func TestPointInPolygon(t *testing.T) {
 	brunei, err := polygonFromFile("test/data/brunei.json")
 	if err != nil {
-		t.Error("brunei json file failed to parse: ", err)
+		t.Errorf("brunei json file failed to parse: %v", err)
 	}
 
-	point := Point{lng: 114.9480600, lat: 4.9402900}
+	point := Point{Lon: 114.9480600, Lat: 4.9402900}
 	if !brunei.Contains(&point) {
 		t.Error("Expected the capital of Brunei to be in Brunei, but it wasn't.")
 	}
@@ -56,7 +56,7 @@ func TestPointInPolygonWithHole(t *testing.T) {
 	}
 
 	// Look at two contours
-	canberra := Point{lng: 149.128684300000030000, lat: -35.2819998}
+	canberra := Point{Lon: 149.128684300000030000, Lat: -35.2819998}
 	isnsw := nsw.Contains(&canberra)
 	isact := act.Contains(&canberra)
 	if !isnsw && !isact {
@@ -64,27 +64,20 @@ func TestPointInPolygonWithHole(t *testing.T) {
 	}
 
 	// Using NSW as a multi-contour polygon
-	nswmulti := &Polygon{}
-	for _, p := range nsw.Points() {
-		nswmulti.Add(p)
-	}
-
-	for _, p := range act.Points() {
-		nswmulti.Add(p)
-	}
+	nswmulti := NewPolygon(append(nsw.Points(), act.Points()...))
 
 	isnsw = nswmulti.Contains(&canberra)
 	if isnsw {
 		t.Error("Canberra should not be in NSW as it falls in the donut contour of the ACT")
 	}
 
-	sydney := Point{lng: 151.209, lat: -33.866}
+	sydney := Point{Lon: 151.209, Lat: -33.866}
 
 	if !nswmulti.Contains(&sydney) {
 		t.Error("Sydney should be in NSW")
 	}
 
-	losangeles := Point{lng: 118.28333, lat: 34.01667}
+	losangeles := Point{Lon: 118.28333, Lat: 34.01667}
 	isnsw = nswmulti.Contains(&losangeles)
 
 	if isnsw {
@@ -104,7 +97,7 @@ func TestEquatorGreenwichContains(t *testing.T) {
 	polygon, err := polygonFromFile("test/data/equator_greenwich.json")
 
 	if err != nil {
-		t.Errorf("error parsing polygon", err)
+		t.Errorf("error parsing polygon: %v", err)
 	}
 
 	if !polygon.Contains(point1) {
@@ -131,12 +124,11 @@ func TestEquatorGreenwichContains(t *testing.T) {
 // A test struct used to encapsulate and
 // Unmarshal JSON into.
 type testPoints struct {
-	Points []*Point
+	Points []Point
 }
 
 // Opens a JSON file and unmarshals the data into a Polygon
 func polygonFromFile(filename string) (*Polygon, error) {
-	p := &Polygon{}
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -148,9 +140,7 @@ func polygonFromFile(filename string) (*Polygon, error) {
 		return nil, err
 	}
 
-	for _, point := range points.Points {
-		p.Add(point)
-	}
+	p := NewPolygon(points.Points)
 
 	return p, nil
 }

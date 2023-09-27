@@ -61,26 +61,26 @@
         "bounds": {
           "northeast": {
             "lat": 37.6397017,
-            "lng": -122.3549197
+            "lon": -122.3549197
           },
           "southwest": {
             "lat": 37.604291,
-            "lng": -122.4015428
+            "lon": -122.4015428
           }
         },
         "location": {
           "lat": 37.615223,
-          "lng": -122.389979
+          "lon": -122.389979
         },
         "location_type": "APPROXIMATE",
         "viewport": {
           "northeast": {
             "lat": 37.6397017,
-            "lng": -122.3549197
+            "lon": -122.3549197
           },
           "southwest": {
             "lat": 37.604291,
-            "lng": -122.4015428
+            "lon": -122.4015428
           }
         }
       },

@@ -50,13 +50,13 @@ func TestMapquestGeocoderQueryStr(t *testing.T) {
 func TestMapquestReverseGeocoderQueryStr(t *testing.T) {
 	// Empty API Key
 	SetMapquestAPIKey("")
-	p := &Point{lat: 123.45, lng: 56.78}
+	p := &Point{Lat: 123.45, Lon: 56.78}
 	res, err := mapquestReverseGeocodeQueryStr(p)
 	if err != nil {
 		t.Errorf("Error creating query string: %v", err)
 	}
 
-	expected := "reverse.php?lat=123.450000&lng=56.780000&format=json"
+	expected := "reverse.php?lat=123.450000&lon=56.780000&format=json"
 	if res != expected {
 		t.Errorf(fmt.Sprintf("Mismatched query string.  Expected: %s.  Actual: %s", expected, res))
 	}
@@ -68,7 +68,7 @@ func TestMapquestReverseGeocoderQueryStr(t *testing.T) {
 		t.Errorf("Error creating query string: %v", err)
 	}
 
-	expected = "reverse.php?lat=123.450000&lng=56.780000&key=foo&format=json"
+	expected = "reverse.php?lat=123.450000&lon=56.780000&key=foo&format=json"
 	if res != expected {
 		t.Errorf(fmt.Sprintf("Mismatched query string.  Expected: %s.  Actual: %s", expected, res))
 	}
@@ -79,14 +79,14 @@ func TestMapquestReverseGeocoderQueryStr(t *testing.T) {
 func TestMapQuestGeocodeFromRequest(t *testing.T) {
 	data, err := GetMockResponse("test/data/mapquest_geocode_success.json")
 	if err != nil {
-		t.Error("%v\n", err)
+		t.Errorf("%v\n", err)
 	}
 
 	res := []*mapQuestGeocodeResponse{}
 
 	err = json.Unmarshal(data, &res)
 	if err != nil {
-		t.Error("%v\n", err)
+		t.Errorf("%v\n", err)
 	}
 
 	if len(res) <= 0 {

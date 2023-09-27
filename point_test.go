@@ -17,12 +17,12 @@ func TestNewPoint(t *testing.T) {
 		t.Error("Expected to get a pointer to a new point, but got nil instead.")
 	}
 
-	if p.lat != 40.5 {
-		t.Errorf("Expected to be able to specify 40.5 as the lat value of a new point, but got %f instead", p.lat)
+	if p.Lat != 40.5 {
+		t.Errorf("Expected to be able to specify 40.5 as the lat value of a new point, but got %f instead", p.Lat)
 	}
 
-	if p.lng != 120.5 {
-		t.Errorf("Expected to be able to specify 120.5 as the lng value of a new point, but got %f instead", p.lng)
+	if p.Lon != 120.5 {
+		t.Errorf("Expected to be able to specify 120.5 as the lon value of a new point, but got %f instead", p.Lon)
 	}
 }
 
@@ -30,29 +30,29 @@ func TestNewPoint(t *testing.T) {
 func TestLat(t *testing.T) {
 	p := NewPoint(40.5, 120.5)
 
-	lat := p.Lat()
+	lat := p.Lat
 
 	if lat != 40.5 {
-		t.Error("Expected a call to GetLat() to return the same lat value as was set before, but got %f instead", lat)
+		t.Errorf("Expected a call to GetLat() to return the same lat value as was set before, but got %f instead", lat)
 	}
 }
 
-// Tests that calling GetLng() after creating a new point returns the expected lng value.
+// Tests that calling GetLng() after creating a new point returns the expected lon value.
 func TestLng(t *testing.T) {
 	p := NewPoint(40.5, 120.5)
 
-	lng := p.Lng()
+	lng := p.Lon
 
 	if lng != 120.5 {
-		t.Error("Expected a call to GetLng() to return the same lat value as was set before, but got %f instead", lng)
+		t.Errorf("Expected a call to GetLng() to return the same lat value as was set before, but got %f instead", lng)
 	}
 }
 
 // Seems brittle :\
 func TestGreatCircleDistance(t *testing.T) {
 	// Test that SEA and SFO are ~ 1091km apart, accurate to 100 meters.
-	sea := &Point{lat: 47.4489, lng: -122.3094}
-	sfo := &Point{lat: 37.6160933, lng: -122.3924223}
+	sea := &Point{Lat: 47.4489, Lon: -122.3094}
+	sfo := &Point{Lat: 37.6160933, Lon: -122.3924223}
 	sfoToSea := 1093.379199082169
 
 	dist := sea.GreatCircleDistance(sfo)
@@ -63,7 +63,7 @@ func TestGreatCircleDistance(t *testing.T) {
 }
 
 func TestPointAtDistanceAndBearing(t *testing.T) {
-	sea := &Point{lat: 47.44745785, lng: -122.308065668024}
+	sea := &Point{Lat: 47.44745785, Lon: -122.308065668024}
 	p := sea.PointAtDistanceAndBearing(1090.7, 180)
 
 	// Expected results of transposing point
@@ -71,16 +71,16 @@ func TestPointAtDistanceAndBearing(t *testing.T) {
 	resultLat := 37.638557
 	resultLng := -122.308066
 
-	withinLatBounds := p.lat < resultLat+0.001 && p.lat > resultLat-0.001
-	withinLngBounds := p.lng < resultLng+0.001 && p.lng > resultLng-0.001
+	withinLatBounds := p.Lat < resultLat+0.001 && p.Lat > resultLat-0.001
+	withinLngBounds := p.Lon < resultLng+0.001 && p.Lon > resultLng-0.001
 	if !(withinLatBounds && withinLngBounds) {
-		t.Error("Unnacceptable result.", fmt.Sprintf("[%f, %f]", p.lat, p.lng))
+		t.Error("Unnacceptable result.", fmt.Sprintf("[%f, %f]", p.Lat, p.Lon))
 	}
 }
 
 func TestBearingTo(t *testing.T) {
-	p1 := &Point{lat: 40.7486, lng: -73.9864}
-	p2 := &Point{lat: 0.0, lng: 0.0}
+	p1 := &Point{Lat: 40.7486, Lon: -73.9864}
+	p2 := &Point{Lat: 0.0, Lon: 0.0}
 	bearing := p1.BearingTo(p2)
 
 	// Expected bearing 60 degrees
@@ -93,8 +93,8 @@ func TestBearingTo(t *testing.T) {
 }
 
 func TestMidpointTo(t *testing.T) {
-	p1 := &Point{lat: 52.205, lng: 0.119}
-	p2 := &Point{lat: 48.857, lng: 2.351}
+	p1 := &Point{Lat: 52.205, Lon: 0.119}
+	p2 := &Point{Lat: 48.857, Lon: 2.351}
 
 	p := p1.MidpointTo(p2)
 
@@ -102,10 +102,10 @@ func TestMidpointTo(t *testing.T) {
 	resultLat := 50.53632
 	resultLng := 1.274614
 
-	withinLatBounds := p.lat < resultLat+0.001 && p.lat > resultLat-0.001
-	withinLngBounds := p.lng < resultLng+0.001 && p.lng > resultLng-0.001
+	withinLatBounds := p.Lat < resultLat+0.001 && p.Lat > resultLat-0.001
+	withinLngBounds := p.Lon < resultLng+0.001 && p.Lon > resultLng-0.001
 	if !(withinLatBounds && withinLngBounds) {
-		t.Error("Unnacceptable result.", fmt.Sprintf("[%f, %f]", p.lat, p.lng))
+		t.Error("Unnacceptable result.", fmt.Sprintf("[%f, %f]", p.Lat, p.Lon))
 	}
 }
 
@@ -119,14 +119,14 @@ func TestMarshalJSON(t *testing.T) {
 		t.Error("Should not encounter an error when attempting to Marshal a Point to JSON")
 	}
 
-	if string(res) != `{"lat":40.7486,"lng":-73.9864}` {
+	if string(res) != `{"lat":40.7486,"lon":-73.9864}` {
 		t.Error("Point should correctly Marshal to JSON")
 	}
 }
 
 // Ensures that a point can be unmarhalled from JSON
 func TestUnmarshalJSON(t *testing.T) {
-	data := []byte(`{"lat":40.7486,"lng":-73.9864}`)
+	data := []byte(`{"lat":40.7486,"lon":-73.9864}`)
 	p := &Point{}
 	err := p.UnmarshalJSON(data)
 
@@ -134,7 +134,7 @@ func TestUnmarshalJSON(t *testing.T) {
 		t.Errorf("Should not encounter an error when attempting to Unmarshal a Point from JSON")
 	}
 
-	if p.lat != 40.7486 || p.lng != -73.9864 {
+	if p.Lat != 40.7486 || p.Lon != -73.9864 {
 		t.Errorf("Point has mismatched data after Unmarshalling from JSON")
 	}
 }
@@ -193,7 +193,7 @@ func coordinatesToBytes(lat, long float64) ([]byte, error) {
 // Asserts true when the latitude and longtitude of p1 and p2 are equal up to a certain number of decimal places.
 // Precision is used to define that number of decimal places.
 func assertPointsEqual(p1, p2 *Point, precision int) bool {
-	roundedLat1, roundedLng1 := int(p1.lat*float64(precision))/precision, int(p1.lng*float64(precision))/precision
-	roundedLat2, roundedLng2 := int(p2.lat*float64(precision))/precision, int(p2.lng*float64(precision))/precision
+	roundedLat1, roundedLng1 := int(p1.Lat*float64(precision))/precision, int(p1.Lon*float64(precision))/precision
+	roundedLat2, roundedLng2 := int(p2.Lat*float64(precision))/precision, int(p2.Lon*float64(precision))/precision
 	return roundedLat1 == roundedLat2 && roundedLng1 == roundedLng2
 }

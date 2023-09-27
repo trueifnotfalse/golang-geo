@@ -109,8 +109,8 @@ func (g *GoogleGeocoder) Geocode(address string) (*Point, error) {
 	lng := res.Results[0].Geometry.Location.Lng
 
 	point := &Point{
-		lat: lat,
-		lng: lng,
+		Lat: lat,
+		Lon: lng,
 	}
 
 	return point, nil
@@ -163,7 +163,7 @@ func (g *GoogleGeocoder) ReverseGeocode(p *Point) (string, error) {
 
 func googleReverseGeocodeQueryStr(p *Point) (string, error) {
 	var queryStr = bytes.NewBufferString("")
-	_, err := queryStr.WriteString(fmt.Sprintf("latlng=%f,%f", p.lat, p.lng))
+	_, err := queryStr.WriteString(fmt.Sprintf("latlng=%f,%f", p.Lat, p.Lon))
 	if err != nil {
 		return "", err
 	}

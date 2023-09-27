@@ -111,8 +111,8 @@ func (g *MapQuestGeocoder) Geocode(address string) (*Point, error) {
 	}
 
 	p := &Point{
-		lat: lat,
-		lng: lng,
+		Lat: lat,
+		Lon: lng,
 	}
 
 	return p, nil
@@ -174,7 +174,7 @@ func (g *MapQuestGeocoder) ReverseGeocode(p *Point) (string, error) {
 func mapquestReverseGeocodeQueryStr(p *Point) (string, error) {
 	var queryBuf = bytes.NewBufferString("reverse.php?")
 
-	_, err := queryBuf.WriteString(fmt.Sprintf("lat=%f&lng=%f", p.lat, p.lng))
+	_, err := queryBuf.WriteString(fmt.Sprintf("lat=%f&lon=%f", p.Lat, p.Lon))
 	if err != nil {
 		return "", err
 	}

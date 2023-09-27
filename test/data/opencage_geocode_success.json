@@ -21,11 +21,11 @@
          "bounds" : {
             "northeast" : {
                "lat" : -23.5370283,
-               "lng" : -46.8357228
+               "lon" : -46.8357228
             },
             "southwest" : {
                "lat" : -23.5373732,
-               "lng" : -46.8374628
+               "lon" : -46.8374628
             }
          },
          "components" : {
@@ -40,7 +40,7 @@
          "formatted" : "Rua Cafel\u00e2ndia, Carapicu\u00edba - SP, Brazil",
          "geometry" : {
             "lat" : -23.5373732,
-            "lng" : -46.8374628
+            "lon" : -46.8374628
          }
       },
       {
@@ -63,11 +63,11 @@
          "bounds" : {
             "northeast" : {
                "lat" : -23.4767875671,
-               "lng" : -46.7804718018
+               "lon" : -46.7804718018
             },
             "southwest" : {
                "lat" : -23.5870838165,
-               "lng" : -46.8663024902
+               "lon" : -46.8663024902
             }
          },
          "components" : {
@@ -80,7 +80,7 @@
          "formatted" : "Carapicu\u00edba, Carapicu\u00edba, Brazil",
          "geometry" : {
             "lat" : -23.52272,
-            "lng" : -46.835
+            "lon" : -46.835
          }
       }
    ]

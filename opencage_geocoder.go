@@ -104,8 +104,8 @@ func (g *OpenCageGeocoder) Geocode(address string) (*Point, error) {
 	lng := res.Results[0].Geometry.Lng
 
 	point := &Point{
-		lat: lat,
-		lng: lng,
+		Lat: lat,
+		Lon: lng,
 	}
 
 	return point, nil
@@ -163,7 +163,7 @@ func (g *OpenCageGeocoder) ReverseGeocode(p *Point) (string, error) {
 
 func opencageReverseGeocodeQueryStr(p *Point) (string, error) {
 	var queryStr = bytes.NewBufferString("?")
-	_, err := queryStr.WriteString(fmt.Sprintf("q=%f,%f", p.lat, p.lng))
+	_, err := queryStr.WriteString(fmt.Sprintf("q=%f,%f", p.Lat, p.Lon))
 	if err != nil {
 		return "", err
 	}

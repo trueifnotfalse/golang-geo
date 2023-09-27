@@ -52,7 +52,7 @@ func TestGoogleGeocoderQueryStr(t *testing.T) {
 func TestGoogleReverseGeocoderQueryStr(t *testing.T) {
 	// Empty API Key
 	SetGoogleAPIKey("")
-	p := &Point{lat: 123.45, lng: 56.78}
+	p := &Point{Lat: 123.45, Lon: 56.78}
 	res, err := googleReverseGeocodeQueryStr(p)
 	if err != nil {
 		t.Errorf("Error creating query string: %v", err)
